@@ -29,6 +29,11 @@ namespace GradoviWebApi.Repository
         {
             return db.Gradovi.Include(g => g.Drzava);
         }
+        public IEnumerable<Grad> GetAllFiltered(int populacijaOd, int populacijaDo)
+        {
+            return db.Gradovi.Where(g => g.BrojStanovnika >= populacijaOd && g.BrojStanovnika <= populacijaDo);
+        }
+
 
         public Grad GetById(int id)
         {
@@ -59,5 +64,6 @@ namespace GradoviWebApi.Repository
             GC.SuppressFinalize(this);
         }
 
+        
     }
 }

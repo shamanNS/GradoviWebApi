@@ -11,6 +11,7 @@ namespace GradoviWebApi.Repository.Interfaces
     {
         IEnumerable<Drzava> GetAll();
         Drzava GetById(int id);
+        IEnumerable<DrzavaDTO> GetPopulation();
         void Add(Drzava drzava);
         void Update(Drzava drzava);
         void Delete(Drzava drzava);

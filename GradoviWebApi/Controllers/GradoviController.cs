@@ -22,10 +22,36 @@ namespace GradoviWebApi.Controllers
         }
 
         // GET: api/Gradovi
-        public IQueryable<Grad> GetGradovi()
+        //public IQueryable<Grad> GetGradovi()
+        //{
+        //    return _gradRepo.GetAll().AsQueryable();
+        //}
+
+
+        public IHttpActionResult GetGradovi(int? populacijaOd = null, int? populacijaDo = null)
         {
-            return _gradRepo.GetAll().AsQueryable();
+            if (populacijaOd == null && populacijaDo == null)
+            {
+                return Ok(_gradRepo.GetAll());
+            }
+            else
+            {
+                if (populacijaOd == null || populacijaDo == null)
+                {
+                    return BadRequest("Obavezno je navesti oba parametra.");
+                }
+
+                if (populacijaDo < populacijaOd)
+                {
+                    return BadRequest("Gornja granica ne može biti manja od donje!");
+                }
+
+                return Ok(_gradRepo.GetAllFiltered((int)populacijaOd, (int)populacijaDo));
+            }
+
+           
         }
+
 
         // GET: api/Gradovi/5
         [ResponseType(typeof(Grad))]

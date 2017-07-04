@@ -36,6 +36,22 @@ namespace GradoviWebApi.Repository
             return drzava;
         }
 
+        public IEnumerable<DrzavaDTO> GetPopulation()
+        {
+            var drzave = db.Drzave;
+            List<DrzavaDTO> listaDrzavaDTO = new List<DrzavaDTO>();
+            foreach (var d in drzave)
+            {
+                var populacija = db.Gradovi.Where(g => g.DrzavaId == d.Id).Sum(g => g.BrojStanovnika);
+                DrzavaDTO drzavaDTO = new DrzavaDTO { Ime = d.Ime, Id = d.Id, Populacija = populacija };
+                listaDrzavaDTO.Add(drzavaDTO);
+            }
+
+            listaDrzavaDTO = listaDrzavaDTO.OrderByDescending(d => d.Populacija).ToList();
+            return listaDrzavaDTO;
+
+        }
+
         public void Update(Drzava drzava)
         {
             db.Entry(drzava).State = EntityState.Modified;
@@ -61,5 +77,6 @@ namespace GradoviWebApi.Repository
             GC.SuppressFinalize(this);
         }
 
+        
     }
 }

@@ -10,6 +10,7 @@ namespace GradoviWebApi.Repository.Interfaces
     public interface IGradRepository
     {
         IEnumerable<Grad> GetAll();
+        IEnumerable<Grad> GetAllFiltered(int populacijaOd, int populacijaDo);
         Grad GetById(int id);
         void Add(Grad grad);
         void Update(Grad grad);

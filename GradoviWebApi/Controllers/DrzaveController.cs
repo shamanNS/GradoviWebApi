@@ -9,30 +9,44 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using GradoviWebApi.Models;
+using GradoviWebApi.Repository.Interfaces;
 
 namespace GradoviWebApi.Controllers
 {
     public class DrzaveController : ApiController
     {
-        private AppContext db = new AppContext();
+        IDrzavaRepository _drzavaRepo;
+
+        public DrzaveController(IDrzavaRepository repository)
+        {
+            _drzavaRepo = repository;
+        }
 
         // GET: api/Drzave
         public IQueryable<Drzava> GetDrzave()
         {
-            return db.Drzave;
+            return _drzavaRepo.GetAll().AsQueryable();
         }
 
         // GET: api/Drzave/5
         [ResponseType(typeof(Drzava))]
         public IHttpActionResult GetDrzava(int id)
         {
-            Drzava drzava = db.Drzave.Find(id);
+            Drzava drzava = _drzavaRepo.GetById(id);
+
             if (drzava == null)
             {
                 return NotFound();
             }
-
             return Ok(drzava);
+        }
+
+
+        [Route("api/statistics")]
+        public IQueryable<DrzavaDTO> GetStatistic()
+        {
+            return _drzavaRepo.GetPopulation().AsQueryable();
+
         }
 
         // PUT: api/Drzave/5
@@ -49,11 +63,9 @@ namespace GradoviWebApi.Controllers
                 return BadRequest();
             }
 
-            db.Entry(drzava).State = EntityState.Modified;
-
             try
             {
-                db.SaveChanges();
+                _drzavaRepo.Update(drzava);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -66,8 +78,7 @@ namespace GradoviWebApi.Controllers
                     throw;
                 }
             }
-
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok(drzava);
         }
 
         // POST: api/Drzave
@@ -79,8 +90,7 @@ namespace GradoviWebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.Drzave.Add(drzava);
-            db.SaveChanges();
+            _drzavaRepo.Add(drzava);
 
             return CreatedAtRoute("DefaultApi", new { id = drzava.Id }, drzava);
         }
@@ -89,30 +99,22 @@ namespace GradoviWebApi.Controllers
         [ResponseType(typeof(Drzava))]
         public IHttpActionResult DeleteDrzava(int id)
         {
-            Drzava drzava = db.Drzave.Find(id);
+            Drzava drzava = _drzavaRepo.GetById(id);
+
             if (drzava == null)
             {
                 return NotFound();
             }
 
-            db.Drzave.Remove(drzava);
-            db.SaveChanges();
-
-            return Ok(drzava);
+            _drzavaRepo.Delete(drzava);
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+
 
         private bool DrzavaExists(int id)
         {
-            return db.Drzave.Count(e => e.Id == id) > 0;
+            return _drzavaRepo.GetAll().Count(e => e.Id == id) > 0;
         }
     }
 }
