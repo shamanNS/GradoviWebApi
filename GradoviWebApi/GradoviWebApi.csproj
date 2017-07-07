@@ -213,11 +213,20 @@
     <Compile Include="Migrations\201707031725241_Initial.Designer.cs">
       <DependentUpon>201707031725241_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201707071726166_Model change.cs" />
+    <Compile Include="Migrations\201707071726166_Model change.Designer.cs">
+      <DependentUpon>201707071726166_Model change.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707071731443_Model change 2.cs" />
+    <Compile Include="Migrations\201707071731443_Model change 2.Designer.cs">
+      <DependentUpon>201707071731443_Model change 2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AppContext.cs" />
     <Compile Include="Models\Drzava.cs" />
     <Compile Include="Models\DrzavaDTO.cs" />
     <Compile Include="Models\Grad.cs" />
+    <Compile Include="Models\GradDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\DrzavaRepository.cs" />
     <Compile Include="Repository\GradRepository.cs" />
@@ -298,6 +307,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201707031725241_Initial.resx">
       <DependentUpon>201707031725241_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707071726166_Model change.resx">
+      <DependentUpon>201707071726166_Model change.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707071731443_Model change 2.resx">
+      <DependentUpon>201707071731443_Model change 2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

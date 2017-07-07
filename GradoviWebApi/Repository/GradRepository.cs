@@ -31,7 +31,9 @@ namespace GradoviWebApi.Repository
         }
         public IEnumerable<Grad> GetAllFiltered(int populacijaOd, int populacijaDo)
         {
-            return db.Gradovi.Where(g => g.BrojStanovnika >= populacijaOd && g.BrojStanovnika <= populacijaDo);
+            return db.Gradovi
+                .Where(g => g.BrojStanovnika >= populacijaOd && g.BrojStanovnika <= populacijaDo)
+                .Include(g => g.Drzava);
         }
 
 

@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
 namespace GradoviWebApi.Models
 {
-    [Table("Drzave")]
-    public class Drzava
+    public class GradDTO
     {
         public int Id { get; set; }
 
@@ -16,7 +14,12 @@ namespace GradoviWebApi.Models
         public string Ime { get; set; }
 
         [Required]
-        public string InternacionalniKod { get; set; }
-        public List<Grad> Gradovi { get; set; }
+        public int PostanskiBroj { get; set; }
+
+        [Required]
+        public int BrojStanovnika { get; set; }
+
+        public int DrzavaId { get; set; }
+        public string DrzavaName { get; set; }
     }
 }

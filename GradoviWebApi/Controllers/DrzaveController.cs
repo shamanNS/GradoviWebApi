@@ -38,7 +38,21 @@ namespace GradoviWebApi.Controllers
             {
                 return NotFound();
             }
-            return Ok(drzava);
+
+            DrzavaDTO drzavaDTO = new DrzavaDTO
+            {
+                Id = drzava.Id,
+                Ime = drzava.Ime,
+                Populacija = drzava.Gradovi.Sum(g => g.BrojStanovnika),
+                Gradovi = drzava.Gradovi.Select( g => 
+                new GradDTO
+                { Id = g.Id, Ime = g.Ime, BrojStanovnika = g.BrojStanovnika, PostanskiBroj = g.PostanskiBroj, DrzavaId = g.DrzavaId, DrzavaName = g.Drzava.Ime}
+                
+                ).ToList()
+                
+            };
+            return Ok(drzavaDTO);
+            //return Ok(drzava);
         }
 
 

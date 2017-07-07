@@ -32,7 +32,8 @@ namespace GradoviWebApi.Repository
 
         public Drzava GetById(int id)
         {
-            Drzava drzava = db.Drzave.Find(id);
+            //Drzava drzava = db.Drzave.Find(id);
+            Drzava drzava = db.Drzave.Include( d=> d.Gradovi).Where(d => d.Id == id).SingleOrDefault();
             return drzava;
         }
 

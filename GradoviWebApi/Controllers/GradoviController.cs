@@ -63,8 +63,11 @@ namespace GradoviWebApi.Controllers
             {
                 return NotFound();
             }
+            GradDTO gradDTO = new GradDTO { Id = grad.Id, Ime = grad.Ime, BrojStanovnika = grad.BrojStanovnika, PostanskiBroj = grad.PostanskiBroj,
 
-            return Ok(grad);
+            DrzavaId = grad.DrzavaId, DrzavaName = grad.Drzava.Ime};
+            return Ok(gradDTO);
+            //return Ok(grad);
         }
 
         // PUT: api/Gradovi/5

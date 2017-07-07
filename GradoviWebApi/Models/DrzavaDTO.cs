@@ -14,5 +14,7 @@ namespace GradoviWebApi.Models
         public string Ime { get; set; }
 
         public int Populacija { get; set; }
+
+        public List<GradDTO> Gradovi { get; set; }
     }
 }
