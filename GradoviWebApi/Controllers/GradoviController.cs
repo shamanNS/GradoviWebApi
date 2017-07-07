@@ -10,6 +10,8 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using GradoviWebApi.Models;
 using GradoviWebApi.Repository.Interfaces;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 namespace GradoviWebApi.Controllers
 {
@@ -32,7 +34,8 @@ namespace GradoviWebApi.Controllers
         {
             if (populacijaOd == null && populacijaDo == null)
             {
-                return Ok(_gradRepo.GetAll());
+               return  Ok(_gradRepo.GetAll().AsQueryable().ProjectTo<GradDTO>());
+                //return Ok(_gradRepo.GetAll());
             }
             else
             {
@@ -46,7 +49,7 @@ namespace GradoviWebApi.Controllers
                     return BadRequest("Gornja granica ne može biti manja od donje!");
                 }
 
-                return Ok(_gradRepo.GetAllFiltered((int)populacijaOd, (int)populacijaDo));
+                return Ok(_gradRepo.GetAllFiltered((int)populacijaOd, (int)populacijaDo).AsQueryable().ProjectTo<GradDTO>());
             }
 
            
@@ -63,9 +66,11 @@ namespace GradoviWebApi.Controllers
             {
                 return NotFound();
             }
-            GradDTO gradDTO = new GradDTO { Id = grad.Id, Ime = grad.Ime, BrojStanovnika = grad.BrojStanovnika, PostanskiBroj = grad.PostanskiBroj,
+            //GradDTO gradDTO = new GradDTO { Id = grad.Id, Ime = grad.Ime, BrojStanovnika = grad.BrojStanovnika, PostanskiBroj = grad.PostanskiBroj,
 
-            DrzavaId = grad.DrzavaId, DrzavaName = grad.Drzava.Ime};
+            //DrzavaId = grad.DrzavaId, DrzavaName = grad.Drzava.Ime};
+
+            GradDTO gradDTO = Mapper.Map<GradDTO>(grad);
             return Ok(gradDTO);
             //return Ok(grad);
         }

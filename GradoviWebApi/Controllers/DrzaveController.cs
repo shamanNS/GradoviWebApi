@@ -10,6 +10,8 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using GradoviWebApi.Models;
 using GradoviWebApi.Repository.Interfaces;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 namespace GradoviWebApi.Controllers
 {
@@ -23,9 +25,11 @@ namespace GradoviWebApi.Controllers
         }
 
         // GET: api/Drzave
-        public IQueryable<Drzava> GetDrzave()
+        public IQueryable<DrzavaDTO> GetDrzave()
         {
-            return _drzavaRepo.GetAll().AsQueryable();
+            //return _drzavaRepo.GetAll().AsQueryable();
+            var drzave = _drzavaRepo.GetAll().AsQueryable().ProjectTo<DrzavaDTO>();
+            return drzave;
         }
 
         // GET: api/Drzave/5
@@ -39,19 +43,24 @@ namespace GradoviWebApi.Controllers
                 return NotFound();
             }
 
-            DrzavaDTO drzavaDTO = new DrzavaDTO
-            {
-                Id = drzava.Id,
-                Ime = drzava.Ime,
-                Populacija = drzava.Gradovi.Sum(g => g.BrojStanovnika),
-                Gradovi = drzava.Gradovi.Select( g => 
-                new GradDTO
-                { Id = g.Id, Ime = g.Ime, BrojStanovnika = g.BrojStanovnika, PostanskiBroj = g.PostanskiBroj, DrzavaId = g.DrzavaId, DrzavaName = g.Drzava.Ime}
-                
-                ).ToList()
-                
-            };
+            DrzavaDTO drzavaDTO = Mapper.Map<DrzavaDTO>(drzava);
+            drzavaDTO.Populacija = drzava.Gradovi.Sum(g => g.BrojStanovnika);
             return Ok(drzavaDTO);
+
+
+            //DrzavaDTO drzavaDTO = new DrzavaDTO
+            //{
+            //    Id = drzava.Id,
+            //    Ime = drzava.Ime,
+            //    Populacija = drzava.Gradovi.Sum(g => g.BrojStanovnika),
+            //    Gradovi = drzava.Gradovi.Select( g => 
+            //    new GradDTO
+            //    { Id = g.Id, Ime = g.Ime, BrojStanovnika = g.BrojStanovnika, PostanskiBroj = g.PostanskiBroj, DrzavaId = g.DrzavaId, DrzavaIme = g.Drzava.Ime}
+
+            //    ).ToList()
+
+            //};
+
             //return Ok(drzava);
         }
 

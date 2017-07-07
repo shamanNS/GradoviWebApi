@@ -7,6 +7,8 @@ using System.Web.Http.Cors;
 using GradoviWebApi.Resolver;
 using GradoviWebApi.Repository.Interfaces;
 using GradoviWebApi.Repository;
+using AutoMapper;
+using GradoviWebApi.Models;
 
 namespace GradoviWebApi
 {
@@ -36,6 +38,19 @@ namespace GradoviWebApi
             container.RegisterType<IGradRepository, GradRepository>(new HierarchicalLifetimeManager());
             container.RegisterType<IDrzavaRepository, DrzavaRepository>(new HierarchicalLifetimeManager());
             config.DependencyResolver = new UnityResolver(container);
+
+            //Automapper
+
+            Mapper.Initialize(cfg => {
+                cfg.CreateMap<Drzava, DrzavaDTO>(); // automatski će mapirati Author.Name u AuthorName
+                //.ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => src.Author.Name)); // ako želimo eksplicitno zadati mapranje
+                /*cfg.CreateMap<Book, BookDetailDTO>(); // automatski će mapirati Author.Name u AuthorName
+                //.ForMember(dest => dest.AuthorName, opt => opt.MapFrom(src => src.Author.Name)); // ako želimo eksplicitno zadati mapiranje*/
+                cfg.CreateMap<DrzavaDTO, Drzava>();
+
+                cfg.CreateMap<Grad, GradDTO>();
+                cfg.CreateMap<GradDTO, Grad>();
+            });
         }
     }
 }

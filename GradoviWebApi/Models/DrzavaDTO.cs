@@ -10,10 +10,12 @@ namespace GradoviWebApi.Models
     {
         public int Id { get; set; }
 
-        [Required]
+
         public string Ime { get; set; }
 
         public int Populacija { get; set; }
+
+        public string InternacionalniKod { get; set; }
 
         public List<GradDTO> Gradovi { get; set; }
     }

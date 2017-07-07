@@ -10,16 +10,14 @@ namespace GradoviWebApi.Models
     {
         public int Id { get; set; }
 
-        [Required]
         public string Ime { get; set; }
 
-        [Required]
         public int PostanskiBroj { get; set; }
 
-        [Required]
         public int BrojStanovnika { get; set; }
 
         public int DrzavaId { get; set; }
-        public string DrzavaName { get; set; }
+
+        public string DrzavaIme { get; set; }
     }
 }

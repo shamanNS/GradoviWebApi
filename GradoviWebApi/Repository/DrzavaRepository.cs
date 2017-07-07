@@ -5,7 +5,7 @@ using System.Web;
 using GradoviWebApi.Repository.Interfaces;
 using GradoviWebApi.Models;
 using System.Data.Entity;
-
+using AutoMapper;
 
 namespace GradoviWebApi.Repository
 {
@@ -27,7 +27,7 @@ namespace GradoviWebApi.Repository
 
         public IEnumerable<Drzava> GetAll()
         {
-            return db.Drzave;
+            return db.Drzave.Include(d => d.Gradovi);
         }
 
         public Drzava GetById(int id)
@@ -39,12 +39,14 @@ namespace GradoviWebApi.Repository
 
         public IEnumerable<DrzavaDTO> GetPopulation()
         {
-            var drzave = db.Drzave;
+            var drzave = db.Drzave.Include( d => d.Gradovi) ;
             List<DrzavaDTO> listaDrzavaDTO = new List<DrzavaDTO>();
             foreach (var d in drzave)
             {
                 var populacija = db.Gradovi.Where(g => g.DrzavaId == d.Id).Sum(g => g.BrojStanovnika);
-                DrzavaDTO drzavaDTO = new DrzavaDTO { Ime = d.Ime, Id = d.Id, Populacija = populacija };
+                //DrzavaDTO drzavaDTO = new DrzavaDTO { Ime = d.Ime, Id = d.Id, Populacija = populacija };
+                DrzavaDTO drzavaDTO = Mapper.Map<DrzavaDTO>(d);
+                drzavaDTO.Populacija = populacija;
                 listaDrzavaDTO.Add(drzavaDTO);
             }
 
